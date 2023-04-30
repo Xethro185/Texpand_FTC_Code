@@ -610,7 +610,7 @@ public class Blue_Left_High_Cycle_Test extends LinearOpMode {
         conefound = slide.sensorRange.getDistance(DistanceUnit.MM) < 60;
 
         //extend till we find a cone or get to the slides limit
-        while (!conefound && slide.Extend.getCurrentPosition() > -900) {
+        while (!conefound && slide.Extend.getCurrentPosition() > -890) {
 
             CheckVSlidePosForZero();
 

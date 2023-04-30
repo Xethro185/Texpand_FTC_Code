@@ -666,7 +666,7 @@ public class Red_Left_Medium_Cycle extends LinearOpMode {
         }
         slide.Extend.setPower(0);
 
-        if (conefound || slide.Extend.getCurrentPosition() <= -890){
+        if (conefound || slide.Extend.getCurrentPosition() <= -885){
 
             //close gripper
             bottom.Base_Gripper.setPosition(0);

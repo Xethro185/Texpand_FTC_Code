@@ -759,7 +759,7 @@ public class Red_Driver extends OpMode {
                             Base_Gripper.setPosition(0.4);
 
                             try {
-                                Thread.sleep(75);
+                                Thread.sleep(150);
                             }catch (Exception e){
                                 System.out.println(e.getMessage());
                             }
@@ -815,7 +815,7 @@ public class Red_Driver extends OpMode {
                         Right_Slide.setPower(1);
                         Left_Slide.setPower(1);
 
-                        Top_Pivot.setPosition(0.15);
+                        Top_Pivot.setPosition(0.2);
 
                         if(Right_Slide.getCurrentPosition() > 1800){
                             Top_Pivot.setPosition(0);
@@ -823,6 +823,12 @@ public class Red_Driver extends OpMode {
                     }
                     Right_Slide.setPower(0.005);
                     Left_Slide.setPower(0.005);
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
 
                     Top_Pivot.setPosition(0.1);
 
@@ -1030,7 +1036,7 @@ public class Red_Driver extends OpMode {
             Extend.setPower(-1);
             conefound = sensorRange.getDistance(DistanceUnit.MM) < 75;
 
-            while(!conefound && Extend.getCurrentPosition() > -880){
+            while(!conefound && Extend.getCurrentPosition() > -880 ){
                 if(Right_Slide.getCurrentPosition() < 50 && !Right_Slide.isBusy() && Left_Slide.getCurrentPosition() < 50 && !Left_Slide.isBusy()){
                     Right_Slide.setPower(0);
                     Left_Slide.setPower(0);

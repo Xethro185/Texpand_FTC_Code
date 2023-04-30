@@ -231,10 +231,8 @@ public class Red_Left_High_Cycle extends LinearOpMode {
 
             drive.WithOutEncoders();
 
-            ExtendHighPreloaded();
-
             //Drop Off Position
-            Odo_Drive(112, 0, 210, 0.1, 1, 0);
+            Odo_Drive(112, 0, 210, 0.1, 1, 0, true);
 
             top.Top_Pivot.setPosition(0.19);
 
@@ -263,10 +261,8 @@ public class Red_Left_High_Cycle extends LinearOpMode {
 
             drive.WithOutEncoders();
 
-            ExtendHighPreloaded();
-
             //Drop Off Position
-            Odo_Drive(112, 0, 210, 0.1, 1, 0);
+            Odo_Drive(112, 0, 210, 0.1, 1, 0, true);
 
             top.Top_Pivot.setPosition(0.19);
 
@@ -295,10 +291,8 @@ public class Red_Left_High_Cycle extends LinearOpMode {
 
             drive.WithOutEncoders();
 
-            ExtendHighPreloaded();
-
             //Drop Off Position
-            Odo_Drive(112, 0, 210, 0.1, 1, 0);
+            Odo_Drive(112, 0, 210, 0.1, 1, 0, true);
 
             top.Top_Pivot.setPosition(0.19);
 
@@ -359,7 +353,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
         slide.Right_Slide.setTargetPosition(1750);
         slide.Left_Slide.setTargetPosition(1750);
 
-        top.Top_Pivot.setPosition(0.19);
+        top.Top_Pivot.setPosition(0.3);
 
         slide.Right_Slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.Left_Slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -602,7 +596,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
         bottom.Destacker_Right.setPosition(De_pos);
 
         if(bottom.Destacker_Left.getPosition() == setpoints.De_Pos_1){
-            bottom.Base_Pivot.setPosition(0.05);
+            bottom.Base_Pivot.setPosition(0.10);
         }else{
             bottom.Base_Pivot.setPosition(0.05);
         }
@@ -616,7 +610,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
         conefound = slide.sensorRange.getDistance(DistanceUnit.MM) < 60;
 
         //extend till we find a cone or get to the slides limit
-        while (!conefound && slide.Extend.getCurrentPosition() > -900) {
+        while (!conefound && slide.Extend.getCurrentPosition() > -885) {
 
             CheckVSlidePosForZero();
 
@@ -822,7 +816,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
         }
     }
 
-    public void Odo_Drive(double targetX, double targetY, double targetRot, double error, double Power_For_Long_Drive, double RampPower) {
+    public void Odo_Drive(double targetX, double targetY, double targetRot, double error, double Power_For_Long_Drive, double RampPower, boolean Preload) {
 
         do {
 
@@ -844,6 +838,12 @@ public class Red_Left_High_Cycle extends LinearOpMode {
 
             //GET START HEADING WITH ODOMETRY
             StartingHeading = Math.toDegrees(getheading());
+
+            if(Preload){
+                if (CurrentXPos > 75){
+                    ExtendHighPreloaded();
+                }
+            }
 
             //PID FOR DRIVING IN THE Y DIRECTION
             drivePID.setPIDF(driveP, 0, driveD, driveF);
@@ -963,7 +963,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
 
         odometry.update(0, 0, 0);
 
-        odometry.updatePose(new Pose2d(1, 0, new Rotation2d(3.141)));
+        odometry.updatePose(new Pose2d(1, -1, new Rotation2d(3.141)));
 
 //        odometry.updatePose();
 
@@ -1012,15 +1012,15 @@ public class Red_Left_High_Cycle extends LinearOpMode {
     }
 
     public void Pos_1(){
-        Odo_Drive(124, -58, 180 , 0.1, 1, 0);
+        Odo_Drive(124, -58, 180 , 0.1, 1, 0, false);
     }
 
     public void Pos_2(){
-        Odo_Drive(124, 0, 180 , 0.1, 1, 0);
+        Odo_Drive(124, 0, 180 , 0.1, 1, 0, false);
     }
 
     public void Pos_3(){
-        Odo_Drive(124, 56, 180 , 0.1, 1, 0);
+        Odo_Drive(124, 56, 180 , 0.1, 1, 0, false);
     }
 
     public void Destack_4 () {
@@ -1164,14 +1164,14 @@ public class Red_Left_High_Cycle extends LinearOpMode {
 
         bottom.Base_Pivot.setPosition(0.2);
 
-        Odo_Drive(132, -8, 220, 0.1, 1, 0);
+        Odo_Drive(132, -8, 220, 0.1, 1, 0, false);
 
         bottom.Base_Gripper.setPosition(0.4);
 
         bottom.Base_Pivot.setPosition(0.1);
 
         //Collect Cone Position
-        Odo_Drive(125, -24, 270, 0.1, 1, 0);
+        Odo_Drive(125, -28, 270, 0.1, 1, 0, false);
 
         //cone 1
         CollectCone(setpoints.De_Pos_1);
@@ -1186,7 +1186,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
             ExtendHigh();
 
             //Drop Off Position
-            Odo_Drive(125, -15, 232 , 0.1, 1, 0.1);
+            Odo_Drive(125, -15, 232 , 0.1, 1, 0.1, false);
 
             DropPreLoad();
         }
@@ -1205,7 +1205,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
             bottom.Base_Pivot.setPosition(0.2);
 
             //Collect Cone Position
-            Odo_Drive(125, -24, 270, 0.1, 1, 0);
+            Odo_Drive(125, -28, 270, 0.1, 1, 0, false);
 
             bottom.Base_Gripper.setPosition(0.4);
 
@@ -1226,7 +1226,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                 ExtendHigh();
 
                 //Drop Off Position
-                Odo_Drive(125, -15, 232 , 0.1, 1, 0.1);
+                Odo_Drive(125, -15, 232 , 0.1, 1, 0.1, false);
 
                 DropPreLoad();
             }
@@ -1243,7 +1243,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                 bottom.Base_Pivot.setPosition(0.2);
 
                 //Collect Cone Position
-                Odo_Drive(125, -24, 270, 0.1, 1, 0);
+                Odo_Drive(125, -28, 270, 0.1, 1, 0, false);
 
                 bottom.Base_Gripper.setPosition(0.4);
 
@@ -1263,7 +1263,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                     ExtendHigh();
 
                     //Drop Off Position
-                    Odo_Drive(125, -15, 232 , 0.1, 1, 0.1);
+                    Odo_Drive(125, -15, 232 , 0.1, 1, 0.1, false);
 
                     DropPreLoad();
                 }
@@ -1281,7 +1281,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                     bottom.Base_Pivot.setPosition(0.2);
 
                     //Collect Cone Position
-                    Odo_Drive(125, -24, 270, 0.1, 1, 0);
+                    Odo_Drive(125, -28, 270, 0.1, 1, 0, false);
 
                     bottom.Base_Gripper.setPosition(0.4);
 
@@ -1301,7 +1301,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                         ExtendHigh();
 
                         //Drop Off Position
-                        Odo_Drive(125, -15, 232 , 0.1, 1, 0.1);
+                        Odo_Drive(125, -15, 232 , 0.1, 1, 0.1, false);
 
                         DropPreLoad();
                     }
@@ -1319,7 +1319,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                         bottom.Base_Pivot.setPosition(0.2);
 
                         //Collect Cone Position
-                        Odo_Drive(125, -24, 270, 0.1, 1, 0);
+                        Odo_Drive(125, -28, 270, 0.1, 1, 0, false);
 
                         bottom.Base_Gripper.setPosition(0.4);
 
@@ -1339,7 +1339,7 @@ public class Red_Left_High_Cycle extends LinearOpMode {
                             ExtendHigh();
 
                             //Drop Off Position
-                            Odo_Drive(125, -15, 232 , 0.1, 1, 0.1);
+                            Odo_Drive(125, -15, 232 , 0.1, 1, 0.1, false);
 
                             DropPreLoad();
                         }

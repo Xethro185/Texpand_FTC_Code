@@ -231,10 +231,8 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
 
             drive.WithOutEncoders();
 
-            ExtendHighPreloaded();
-
             //Drop Off Position
-            Odo_Drive(112, 0, 150, 0.1, 1, 0);
+            Odo_Drive(112, 0, 150, 0.1, 1, 0, true);
 
             top.Top_Pivot.setPosition(0.19);
 
@@ -263,10 +261,8 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
 
             drive.WithOutEncoders();
 
-            ExtendHighPreloaded();
-
             //Drop Off Position
-            Odo_Drive(112, 0, 150, 0.1, 1, 0);
+            Odo_Drive(112, 0, 150, 0.1, 1, 0, true);
 
             top.Top_Pivot.setPosition(0.19);
 
@@ -295,10 +291,8 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
 
             drive.WithOutEncoders();
 
-            ExtendHighPreloaded();
-
             //Drop Off Position
-            Odo_Drive(112, 0, 150, 0.1, 1, 0);
+            Odo_Drive(112, 0, 150, 0.1, 1, 0, true);
 
             top.Top_Pivot.setPosition(0.19);
 
@@ -616,7 +610,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
         conefound = slide.sensorRange.getDistance(DistanceUnit.MM) < 60;
 
         //extend till we find a cone or get to the slides limit
-        while (!conefound && slide.Extend.getCurrentPosition() > -900) {
+        while (!conefound && slide.Extend.getCurrentPosition() > -890) {
 
             CheckVSlidePosForZero();
 
@@ -633,7 +627,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
         }
         slide.Extend.setPower(0);
 
-        if (conefound || slide.Extend.getCurrentPosition() <= -890){
+        if (conefound || slide.Extend.getCurrentPosition() <= -885){
 
             //close gripper
             bottom.Base_Gripper.setPosition(0);
@@ -704,82 +698,19 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                 }
 
 
-                Nest_Occupied = slide.colour.blue() > 1500;
+            Nest_Occupied = slide.colour.blue() > 1500;
 
-                if(!Nest_Occupied){
-                    try {
-                        Thread.sleep(250);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }else{
-                    try {
-                        Thread.sleep(10);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+
+            while(!Nest_Occupied && runtime.milliseconds() < 26000){
+
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
 
                 Nest_Occupied = slide.colour.blue() > 1500;
 
-                if(!Nest_Occupied){
-//                    Top_Pivot.setPosition(0.8);
-                    try {
-                        Thread.sleep(50);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-//                    Top_Pivot.setPosition(1);
-                }
-
-                if(!Nest_Occupied){
-//                    Top_Pivot.setPosition(0.8);
-                    try {
-                        Thread.sleep(50);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-//                    Top_Pivot.setPosition(1);
-                }
-
-            if(!Nest_Occupied){
-//                    Top_Pivot.setPosition(0.8);
-                try {
-                    Thread.sleep(50);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-//                    Top_Pivot.setPosition(1);
-            }
-
-            if(!Nest_Occupied){
-//                    Top_Pivot.setPosition(0.8);
-                try {
-                    Thread.sleep(50);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-//                    Top_Pivot.setPosition(1);
-            }
-
-            if(!Nest_Occupied){
-                top.Top_Pivot.setPosition(0.8);
-                try {
-                    Thread.sleep(300);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                top.Top_Pivot.setPosition(1);
-            }
-
-            if(!Nest_Occupied){
-//                    Top_Pivot.setPosition(0.8);
-                try {
-                    Thread.sleep(50);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-//                    Top_Pivot.setPosition(1);
             }
 
             Nest_Occupied = slide.colour.blue() > 1500;
@@ -823,7 +754,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
         }
     }
 
-    public void Odo_Drive(double targetX, double targetY, double targetRot, double error, double Power_For_Long_Drive, double RampPower) {
+    public void Odo_Drive(double targetX, double targetY, double targetRot, double error, double Power_For_Long_Drive, double RampPower, boolean Preload) {
 
         do {
 
@@ -842,6 +773,12 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
 //
 //            //GET START HEADING WITH GYRO
 //            StartingHeadinggyro = gyro.angle();
+
+            if(Preload){
+                if (CurrentXPos > 75){
+                    ExtendHighPreloaded();
+                }
+            }
 
             //GET START HEADING WITH ODOMETRY
             StartingHeading = Math.toDegrees(getheading());
@@ -986,9 +923,9 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
             public void onOpened() {
                 Texpandcamera.getExposureControl().setMode(ExposureControl.Mode.Manual);
 
-                Texpandcamera.getExposureControl().setExposure(30, TimeUnit.MILLISECONDS);
+                Texpandcamera.getExposureControl().setExposure(25, TimeUnit.MILLISECONDS);
 
-                Texpandcamera.getGainControl().setGain(100);
+                Texpandcamera.getGainControl().setGain(1);
 
                 FocusControl.Mode focusmode = FocusControl.Mode.Fixed;
 
@@ -1013,29 +950,29 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
     }
 
     public void Pos_1(){
-        Odo_Drive(124, -53, 180 , 0.1, 1, 0);
+        Odo_Drive(124, -53, 180 , 0.1, 1, 0, false);
     }
 
     public void Pos_2(){
-        Odo_Drive(124, 0, 180 , 0.1, 1, 0);
+        Odo_Drive(124, 0, 180 , 0.1, 1, 0, false);
     }
 
     public void Pos_3(){
-        Odo_Drive(124, 60, 180 , 0.1, 1, 0);
+        Odo_Drive(124, 60, 180 , 0.1, 1, 0, false);
     }
 
     public void Destack_5 () {
 
         bottom.Base_Pivot.setPosition(0.2);
 
-        Odo_Drive(132, 8, 135, 0.1, 1, 0);
+        Odo_Drive(132, 8, 135, 0.1, 1, 0, false);
 
         bottom.Base_Gripper.setPosition(0.4);
 
         bottom.Base_Pivot.setPosition(0.05);
 
         //Collect Cone Position
-        Odo_Drive(132, 28, 90, 0.1, 1, 0);
+        Odo_Drive(132, 28, 90, 0, 1, 0, false);
 
         //cone 1
         CollectCone(setpoints.De_Pos_1);
@@ -1050,7 +987,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
             ExtendHigh();
 
             //Drop Off Position
-            Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1);
+            Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1, false);
 
             DropPreLoad();
         }
@@ -1069,7 +1006,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
             bottom.Base_Pivot.setPosition(0.2);
 
             //Collect Cone Position
-            Odo_Drive(132, 28, 90, 0.1, 1, 0.1);
+            Odo_Drive(132, 28, 90, 0, 1, 0.1, false);
 
             bottom.Base_Gripper.setPosition(0.4);
 
@@ -1090,7 +1027,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                 ExtendHigh();
 
                 //Drop Off Position
-                Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1);
+                Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1, false);
 
                 DropPreLoad();
             }
@@ -1107,7 +1044,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                 bottom.Base_Pivot.setPosition(0.2);
 
                 //Collect Cone Position
-                Odo_Drive(132, 28, 90, 0.1, 1, 0.1);
+                Odo_Drive(132, 28, 90, 0, 1, 0.1, false);
 
                 bottom.Base_Gripper.setPosition(0.4);
 
@@ -1127,7 +1064,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                     ExtendHigh();
 
                     //Drop Off Position
-                    Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1);
+                    Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1, false);
 
                     DropPreLoad();
                 }
@@ -1145,7 +1082,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                     bottom.Base_Pivot.setPosition(0.2);
 
                     //Collect Cone Position
-                    Odo_Drive(132, 28, 90, 0.1, 1, 0.1);
+                    Odo_Drive(132, 28, 90, 0, 1, 0.1, false);
 
                     bottom.Base_Gripper.setPosition(0.4);
 
@@ -1165,7 +1102,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                         ExtendHigh();
 
                         //Drop Off Position
-                        Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1);
+                        Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1, false);
 
                         DropPreLoad();
                     }
@@ -1183,7 +1120,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                         bottom.Base_Pivot.setPosition(0.2);
 
                         //Collect Cone Position
-                        Odo_Drive(132, 28, 90, 0.1, 1, 0.1);
+                        Odo_Drive(132, 28, 90, 0, 1, 0.1, false);
 
                         bottom.Base_Gripper.setPosition(0.4);
 
@@ -1203,7 +1140,7 @@ public class Blue_Right_High_Cycle extends LinearOpMode {
                             ExtendHigh();
 
                             //Drop Off Position
-                            Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1);
+                            Odo_Drive(132, 19.5, 128 , 0.1, 1, 0.1, false);
 
                             DropPreLoad();
                         }

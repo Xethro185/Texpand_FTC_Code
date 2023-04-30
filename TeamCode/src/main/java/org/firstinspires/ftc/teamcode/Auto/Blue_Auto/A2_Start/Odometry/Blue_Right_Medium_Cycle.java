@@ -648,7 +648,7 @@ public class Blue_Right_Medium_Cycle extends LinearOpMode {
         conefound = slide.sensorRange.getDistance(DistanceUnit.MM) < 60;
 
         //extend till we find a cone or get to the slides limit
-        while (!conefound && slide.Extend.getCurrentPosition() > -900) {
+        while (!conefound && slide.Extend.getCurrentPosition() > -885) {
 
             CheckVSlidePosForZero();
 
@@ -984,7 +984,7 @@ public class Blue_Right_Medium_Cycle extends LinearOpMode {
 
         odometry.update(0, 0, 0);
 
-        odometry.updatePose(new Pose2d(0, -8, new Rotation2d(0)));
+        odometry.updatePose(new Pose2d(1, -8, new Rotation2d(0)));
 
 //        odometry.updatePose();
 
@@ -1006,9 +1006,9 @@ public class Blue_Right_Medium_Cycle extends LinearOpMode {
             public void onOpened() {
                 Texpandcamera.getExposureControl().setMode(ExposureControl.Mode.Manual);
 
-                Texpandcamera.getExposureControl().setExposure(30, TimeUnit.MILLISECONDS);
+                Texpandcamera.getExposureControl().setExposure(25, TimeUnit.MILLISECONDS);
 
-                Texpandcamera.getGainControl().setGain(100);
+                Texpandcamera.getGainControl().setGain(1);
 
                 FocusControl.Mode focusmode = FocusControl.Mode.Fixed;
 
